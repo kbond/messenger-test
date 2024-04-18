@@ -33,7 +33,7 @@ final class TestTransportFactory implements TransportFactoryInterface
 
     public function createTransport(string $dsn, array $options, SerializerInterface $serializer): TransportInterface // @phpstan-ignore-line
     {
-        return new TestTransport($options['transport_name'], $this->bus, $this->dispatcher, $serializer, $this->clock, $this->parseDsn($dsn));
+        return new TestTransport($options['transport_name'], $this->bus, $this->dispatcher, $serializer, $this->clock, \array_merge($this->parseDsn($dsn), $options));
     }
 
     public function supports(string $dsn, array $options): bool // @phpstan-ignore-line

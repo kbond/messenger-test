@@ -352,6 +352,34 @@ final class TestTransport implements TransportInterface
         self::$enableMessagesCollection = false;
     }
 
+    public function isIntercepting(): bool
+    {
+        return self::$intercept[$this->name];
+    }
+
+    public function isCatchingExceptions(): bool
+    {
+        return self::$catchExceptions[$this->name];
+    }
+
+    public function shouldTestSerialization(): bool
+    {
+        return self::$testSerialization[$this->name];
+    }
+
+    public function isRetriesDisabled(): bool
+    {
+        return self::$disableRetries[$this->name];
+    }
+
+    /**
+     * @phpstan-assert-if-true !null $this->clock
+     */
+    public function supportsDelayStamp(): bool
+    {
+        return $this->clock && self::$supportDelayStamp[$this->name];
+    }
+
     /**
      * @param array<string, Envelope[]> $messagesCollection
      */
@@ -363,34 +391,6 @@ final class TestTransport implements TransportInterface
 
         $messagesCollection[$this->name] ??= [];
         $messagesCollection[$this->name][] = $envelope;
-    }
-
-    private function isIntercepting(): bool
-    {
-        return self::$intercept[$this->name];
-    }
-
-    private function isCatchingExceptions(): bool
-    {
-        return self::$catchExceptions[$this->name];
-    }
-
-    private function shouldTestSerialization(): bool
-    {
-        return self::$testSerialization[$this->name];
-    }
-
-    private function isRetriesDisabled(): bool
-    {
-        return self::$disableRetries[$this->name];
-    }
-
-    /**
-     * @phpstan-assert-if-true !null $this->clock
-     */
-    private function supportsDelayStamp(): bool
-    {
-        return $this->clock && self::$supportDelayStamp[$this->name];
     }
 
     private function hasMessagesToProcess(): bool
